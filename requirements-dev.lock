@@ -18,7 +18,7 @@ kiwisolver==1.4.5
     # via matplotlib
 matplotlib==3.9.0
     # via deep-learning-from-scratch-2
-numpy==1.23.0
+numpy==1.26.4
     # via contourpy
     # via deep-learning-from-scratch-2
     # via matplotlib
@@ -30,7 +30,5 @@ pyparsing==3.1.2
     # via matplotlib
 python-dateutil==2.9.0.post0
     # via matplotlib
-setuptools==69.5.1
-    # via deep-learning-from-scratch-2
 six==1.16.0
     # via python-dateutil
