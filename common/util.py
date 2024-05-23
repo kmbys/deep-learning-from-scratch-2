@@ -80,13 +80,13 @@ def convert_one_hot(corpus, vocab_size):
     N = corpus.shape[0]
 
     if corpus.ndim == 1:
-        one_hot = np.zeros((N, vocab_size), dtype=int32)
+        one_hot = np.zeros((N, vocab_size), dtype=np.int32)
         for idx, word_id in enumerate(corpus):
             one_hot[idx, word_id] = 1
 
     elif corpus.ndim == 2:
         C = corpus.shape[1]
-        one_hot = np.zeros((N, C, vocab_size), dtype=int32)
+        one_hot = np.zeros((N, C, vocab_size), dtype=np.int32)
         for idx_0, word_ids in enumerate(corpus):
             for idx_1, word_id in enumerate(word_ids):
                 one_hot[idx_0, idx_1, word_id] = 1
@@ -103,7 +103,7 @@ def create_co_matrix(corpus, vocab_size, window_size=1):
     :return: 共起行列
     '''
     corpus_size = len(corpus)
-    co_matrix = np.zeros((vocab_size, vocab_size), dtype=int32)
+    co_matrix = np.zeros((vocab_size, vocab_size), dtype=np.int32)
 
     for idx, word_id in enumerate(corpus):
         for i in range(1, window_size + 1):
@@ -201,8 +201,8 @@ def eval_perplexity(model, corpus, batch_size=10, time_size=35):
     jump = (corpus_size - 1) // batch_size
 
     for iters in range(max_iters):
-        xs = np.zeros((batch_size, time_size), dtype=int32)
-        ts = np.zeros((batch_size, time_size), dtype=int32)
+        xs = np.zeros((batch_size, time_size), dtype=np.int32)
+        ts = np.zeros((batch_size, time_size), dtype=np.int32)
         time_offset = iters * time_size
         offsets = [time_offset + (i * jump) for i in range(batch_size)]
         for t in range(time_size):

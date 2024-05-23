@@ -54,7 +54,7 @@ class UnigramSampler:
         batch_size = target.shape[0]
 
         if not GPU:
-            negative_sample = np.zeros((batch_size, self.sample_size), dtype=int32)
+            negative_sample = np.zeros((batch_size, self.sample_size), dtype=np.int32)
 
             for i in range(batch_size):
                 p = self.word_p.copy()
@@ -89,11 +89,11 @@ class NegativeSamplingLoss:
 
         # 正例のフォワード
         score = self.embed_dot_layers[0].forward(h, target)
-        correct_label = np.ones(batch_size, dtype=int32)
+        correct_label = np.ones(batch_size, dtype=np.int32)
         loss = self.loss_layers[0].forward(score, correct_label)
 
         # 負例のフォワード
-        negative_label = np.zeros(batch_size, dtype=int32)
+        negative_label = np.zeros(batch_size, dtype=np.int32)
         for i in range(self.sample_size):
             negative_target = negative_sample[:, i]
             score = self.embed_dot_layers[1 + i].forward(h, negative_target)
