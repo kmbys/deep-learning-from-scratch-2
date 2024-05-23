@@ -301,7 +301,7 @@ class TwoLayerNet:
                 np.zeros(output_size)
             )
         ]
-        self.loss_layer = SoftmaxWithLoss
+        self.loss_layer = SoftmaxWithLoss()
         self.params = [layer.params for layer in self.layers]
         self.grads = [layer.grads for layer in self.layers]
 
@@ -311,12 +311,104 @@ class TwoLayerNet:
         return x
 
     def forward(self, x, t):
-        return self.loss_layer.forward(self.predict(x), t)
+        score = self.predict(x)
+        loss = self.loss_layer.forward(score, t)
+        return loss
 
     def backward(self, dout=1):
         dout = self.loss_layer.backward(dout)
-        for layer in self.layers:
+        for layer in reversed(self.layers):
             dout = layer.backward(dout)
         return dout
 
 # %%
+import numpy as np
+from common.optimizer import SGD
+from dataset import spiral
+import matplotlib.pyplot as plt
+from ch01.two_layer_net import TwoLayerNet
+
+# ハイパーパラメータの設定
+max_epoch = 300
+batch_size = 30
+hidden_size = 10
+learning_rate = 1.0
+
+# データの読み込み、モデルとオプティマイザの生成
+x, t = spiral.load_data()
+model = TwoLayerNet(2, hidden_size=hidden_size, output_size=3)
+optimizer = SGD(lr=learning_rate)
+
+# 学習で使用する変数
+data_size = len(x)
+max_iters = data_size // batch_size
+total_loss = 0
+loss_count = 0
+loss_list = []
+
+for epoch in range(max_epoch):
+    idx = np.random.permutation(data_size)
+    x = x[idx]
+    t = t[idx]
+
+    for iters in range(max_iters):
+        batch_x = x[iters*batch_size:(iters+1)*batch_size]
+        batch_t = t[iters*batch_size:(iters+1)*batch_size]
+
+        loss = model.forward(batch_x, batch_t)
+        model.backward()
+        optimizer.update(model.params, model.grads)
+
+        total_loss += loss
+        loss_count += 1
+
+        # 定期的に学習経過を出力
+        if (iters+1) % 10 == 0:
+            avg_loss = total_loss / loss_count
+            print(f'| epoch {epoch + 1} | iter {iters + 1} | loss {avg_loss:.2f}')
+            loss_list.append(avg_loss)
+            total_loss = 0
+            loss_count = 0
+
+plt.plot(loss_list)
+
+# %%
+import numpy as np
+np.random.permutation(10)
+
+# %%
+np.random.permutation(10)
+
+# %%
+from common.optimizer import SGD
+from common.trainer import Trainer
+from dataset import spiral
+from ch01.two_layer_net import TwoLayerNet
+
+x, t = spiral.load_data()
+
+trainer = Trainer(
+    model=TwoLayerNet(input_size=2, hidden_size=10, output_size=3),
+    optimizer=SGD(lr=1.0),
+)
+trainer.fit(
+    x=x,
+    t=t,
+    max_epoch=300,
+    batch_size=30,
+    eval_interval=10,
+)
+trainer.plot()
+
+# %%
+import numpy as np
+a = np.random.randn(3)
+a.dtype
+
+# %%
+b = np.random.randn(3).astype(np.float32)
+b.dtype
+
+# %%
+c = np.random.randn(3).astype('f')
+c.dtype
