@@ -30,6 +30,8 @@ ipython==8.24.0
     # via ipykernel
 jedi==0.19.1
     # via ipython
+joblib==1.4.2
+    # via scikit-learn
 jupyter-client==8.6.1
     # via ipykernel
 jupyter-core==5.7.2
@@ -48,6 +50,8 @@ numpy==1.26.4
     # via contourpy
     # via deep-learning-from-scratch-2
     # via matplotlib
+    # via scikit-learn
+    # via scipy
 packaging==24.0
     # via ipykernel
     # via matplotlib
@@ -77,11 +81,17 @@ python-dateutil==2.9.0.post0
 pyzmq==26.0.3
     # via ipykernel
     # via jupyter-client
+scikit-learn==1.5.0
+    # via deep-learning-from-scratch-2
+scipy==1.13.1
+    # via scikit-learn
 six==1.16.0
     # via asttokens
     # via python-dateutil
 stack-data==0.6.3
     # via ipython
+threadpoolctl==3.5.0
+    # via scikit-learn
 tornado==6.4
     # via ipykernel
     # via jupyter-client
